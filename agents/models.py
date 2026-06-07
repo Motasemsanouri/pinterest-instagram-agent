@@ -48,31 +48,31 @@ class PinData(BaseModel):
     instagram_post: Optional["InstagramPost"] = None
 
 class ImageAnalysisResult(BaseModel):
-    """تحليل صورة pin واحدة — محلي + LLM."""
+    """Analysis of a single pin's image — local + LLM."""
 
-    pin_id: str = Field(..., description="ربط التحليل بالـ pin")
+    pin_id: str = Field(..., description="Links the analysis to the pin")
 
-    # ── تحليل محلي (بدون API) ──────────────────────────────────────────
-    width: Optional[int] = Field(None, description="عرض الصورة بالبكسل")
-    height: Optional[int] = Field(None, description="ارتفاع الصورة بالبكسل")
-    aspect_ratio: Optional[float] = Field(None, description="العرض/الارتفاع")
+    # ── Local analysis (no API) ────────────────────────────────────────
+    width: Optional[int] = Field(None, description="Image width in pixels")
+    height: Optional[int] = Field(None, description="Image height in pixels")
+    aspect_ratio: Optional[float] = Field(None, description="Width / height")
     dominant_colors: List[str] = Field(
-        default_factory=list, description="أبرز الألوان بصيغة hex"
+        default_factory=list, description="Top colors in hex format"
     )
     orientation: Optional[str] = Field(
         None, description="portrait / landscape / square"
     )
 
-    # ── تحليل LLM (Claude vision) ───────────────────────────────────────
-    description: Optional[str] = Field(None, description="وصف الصورة من الـ LLM")
-    tags: List[str] = Field(default_factory=list, description="وسوم المحتوى")
+    # ── LLM analysis (Claude vision) ────────────────────────────────────
+    description: Optional[str] = Field(None, description="Image description from the LLM")
+    tags: List[str] = Field(default_factory=list, description="Content tags")
     quality_score: Optional[float] = Field(
-        None, ge=0.0, le=1.0, description="تقييم جودة 0-1 من الـ LLM"
+        None, ge=0.0, le=1.0, description="Quality score 0-1 from the LLM"
     )
 
-    # ── ميتاداتا ────────────────────────────────────────────────────────
-    analyzed_by_llm: bool = Field(False, description="هل تم تحليل LLM بنجاح")
-    error: Optional[str] = Field(None, description="خطأ التحليل إن وجد")
+    # ── Metadata ────────────────────────────────────────────────────────
+    analyzed_by_llm: bool = Field(False, description="Whether LLM analysis succeeded")
+    error: Optional[str] = Field(None, description="Analysis error, if any")
 
 
 class PinterestScrapingResult(BaseModel):
@@ -106,7 +106,6 @@ class PinterestScrapingResult(BaseModel):
             "error_count": len(self.errors),
         }
 
-    # TODO: Phase 2 — Add ImageAnalysisResult model
 class RankingResult(BaseModel):
     """Phase 3 — summary of the ranking pass."""
 
@@ -182,8 +181,3 @@ class InstagramPublishResult(BaseModel):
             "total_prepared": self.total_prepared,
             "total_published": self.total_published,
         }
-
-
-    # TODO: Phase 4 — Add RankingResult model placeholder kept for compatibility
-    # TODO: Phase 4 — Add QualityEvaluationResult model
-    # TODO: Phase 5 — Add InstagramPublishResult model

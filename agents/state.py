@@ -30,7 +30,7 @@ class AgentState(TypedDict):
     pinterest_result: Optional[PinterestScrapingResult]
 
     # ─── Phase 2 — Image Analysis Agent output ────────────────────────────────
-    # نخزّن التحليل داخل PinData نفسها، وهذا عدّاد ملخّص فقط
+    # The analysis is stored inside PinData itself; this is just a summary counter
     images_analyzed: Optional[int]
 
     # ─── Phase 3 — Image Ranking Agent output ─────────────────────────────────
